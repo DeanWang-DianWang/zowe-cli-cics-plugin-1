@@ -48,6 +48,11 @@ export const CicsCmciConstants: { [key: string]: any } = {
      */
     CICS_DEFINITION_WEBSERVICE: "CICSDefinitionWebService",
 
+    /**
+     * Specifies the required part of the REST interface URI to access pipeline definitions
+     */
+    CICS_DEFINITION_PIPELINE: "CICSDefinitionPipeline",
+
     /*
      * Specifies the required part of the REST interface URI to access URIMaps
      */

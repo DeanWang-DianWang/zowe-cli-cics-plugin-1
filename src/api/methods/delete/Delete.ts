@@ -12,7 +12,7 @@
 import { AbstractSession, ImperativeExpect, Logger } from "@zowe/imperative";
 import { CicsCmciRestClient } from "../../rest";
 import { CicsCmciConstants } from "../../constants";
-import { ICMCIApiResponse, IProgramParms, ITransactionParms, IURIMapParms, IWebServiceParms } from "../../doc";
+import { ICMCIApiResponse, IProgramParms, ITransactionParms, IURIMapParms, IWebServiceParms,IPIpelineParms } from "../../doc";
 
 /**
  * Delete a program installed in CICS through CMCI REST API
@@ -108,6 +108,32 @@ export async function deleteWebservice(session: AbstractSession, parms: IWebServ
     const cicsPlex = parms.cicsPlex == null ? "" : parms.cicsPlex + "/";
     const cmciResource = "/" + CicsCmciConstants.CICS_SYSTEM_MANAGEMENT + "/" +
         CicsCmciConstants.CICS_DEFINITION_WEBSERVICE + "/" + cicsPlex +
+        `${parms.regionName}?CRITERIA=(NAME=${parms.name})&PARAMETER=CSDGROUP(${parms.csdGroup})`;
+    return CicsCmciRestClient.deleteExpectParsedXml(session, cmciResource, []);
+}
+
+/**
+ * Delete a pipeline installed in CICS through CMCI REST API
+ * @param {AbstractSession} session - the session to connect to CMCI with
+ * @param {IPIpelineParms} parms - parameters for deleting your pipeeline
+ * @returns {Promise<ICMCIApiResponse>} promise that resolves to the response (XML parsed into a javascript object)
+ *                          when the request is complete
+ * @throws {ImperativeError} CICS pipeeline name not defined or blank
+ * @throws {ImperativeError} CICS CSD group not defined or blank
+ * @throws {ImperativeError} CICS region name not defined or blank
+ * @throws {ImperativeError} CicsCmciRestClient request fails
+ */
+export async function deletePIpeline(session: AbstractSession, parms: IPIpelineParms): Promise<ICMCIApiResponse> {
+    ImperativeExpect.toBeDefinedAndNonBlank(parms.name, "CICS pipeline name", "CICS pipeline name is required");
+    ImperativeExpect.toBeDefinedAndNonBlank(parms.csdGroup, "CICS CSD Group", "CICS CSD group is required");
+    ImperativeExpect.toBeDefinedAndNonBlank(parms.regionName, "CICS Region name", "CICS region name is required");
+
+    Logger.getAppLogger().debug("Attempting to delete a pipeline with the following parameters:\n%s", JSON.stringify(parms));
+
+    const cicsPlex = parms.cicsPlex == null ? "" : parms.cicsPlex + "/";
+    const cicsScope = parms.cicsScope == null ? "" : parms.cicsScope + "/";
+    const cmciResource = "/" + CicsCmciConstants.CICS_SYSTEM_MANAGEMENT + "/" +
+        CicsCmciConstants.CICS_DEFINITION_PIPELINE + "/" + cicsPlex + cicsScope +
         `${parms.regionName}?CRITERIA=(NAME=${parms.name})&PARAMETER=CSDGROUP(${parms.csdGroup})`;
     return CicsCmciRestClient.deleteExpectParsedXml(session, cmciResource, []);
 }

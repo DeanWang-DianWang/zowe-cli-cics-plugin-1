@@ -14,6 +14,7 @@ import { ProgramDefinition } from "./program/Program.definition";
 import { TransactionDefinition } from "./transaction/Transaction.definition";
 import { UrimapDefinition } from "./urimap/Urimap.definition";
 import { WebServiceDefinition } from "./webservice/Webservice.definition";
+import { PIpelineDefinition } from "./pipeline/PIpeline.definition";
 
 import i18nTypings from "../-strings-/en";
 import { CicsSession } from "../CicsSession";
@@ -32,7 +33,8 @@ const definition: ICommandDefinition = {
     children: [ProgramDefinition,
                TransactionDefinition,
                UrimapDefinition,
-               WebServiceDefinition],
+               WebServiceDefinition,
+               PIpelineDefinition],
     passOn: [
         {
             property: "options",

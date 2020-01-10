@@ -87,6 +87,10 @@ export const ResourceDefinition: ICommandDefinition = {
         {
             description: strings.EXAMPLES.EX9,
             options: `CICSProgram --region-name MYREGION --criteria "PROGRAM=MYPRG*" --rft table --rfh --rff program length status`
+        },
+        {
+            description: strings.EXAMPLES.EX10,
+            options: `CICSDefinitionPipeline --region-name MYREGION  --parameter "CSDGROUP(GRP1)"`
         }
     ]
 };

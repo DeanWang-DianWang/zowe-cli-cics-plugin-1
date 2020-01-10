@@ -12,7 +12,7 @@
 import { AbstractSession, ImperativeExpect, Logger } from "@zowe/imperative";
 import { CicsCmciRestClient } from "../../rest";
 import { CicsCmciConstants } from "../../constants";
-import { ICMCIApiResponse, IProgramParms, IURIMapParms, IWebServiceParms } from "../../doc";
+import { ICMCIApiResponse, IProgramParms, IURIMapParms, IWebServiceParms, IPIpelineParms } from "../../doc";
 
 /**
  * Install a program definition to CICS through CMCI REST API
@@ -119,6 +119,7 @@ export async function installUrimap(session: AbstractSession, parms: IURIMapParm
 }
 
 /**
+
  * Install a Webservice installed in CICS through CMCI REST API
  * @param {AbstractSession} session - the session to connect to CMCI with
  * @param {IWebServiceParms} parms - parameters for enabling your Webservice
@@ -129,7 +130,6 @@ export async function installUrimap(session: AbstractSession, parms: IURIMapParm
  * @throws {ImperativeError} CICS region name not defined or blank
  * @throws {ImperativeError} CicsCmciRestClient request fails
  */
-
 export async function installWebservice(session: AbstractSession, parms: IWebServiceParms): Promise<ICMCIApiResponse> {
     ImperativeExpect.toBeDefinedAndNonBlank(parms.name, "CICS Webservice name", "CICS Webservice name is required");
     ImperativeExpect.toBeDefinedAndNonBlank(parms.csdGroup, "CICS CSD group", "CICS CSD group name is required");
@@ -140,6 +140,39 @@ export async function installWebservice(session: AbstractSession, parms: IWebSer
     const cicsPlex = parms.cicsPlex == null ? "" : parms.cicsPlex + "/";
     const cmciResource = "/" + CicsCmciConstants.CICS_SYSTEM_MANAGEMENT + "/" +
         CicsCmciConstants.CICS_DEFINITION_WEBSERVICE + "/" + cicsPlex +
+        `${parms.regionName}?CRITERIA=(NAME=${parms.name})&PARAMETER=CSDGROUP(${parms.csdGroup})`;
+    const requestBody: any = {
+        request: {
+            action: {
+                $: {
+                    name: "CSDINSTALL",
+                }
+            }
+        }
+    };
+    return CicsCmciRestClient.putExpectParsedXml(session, cmciResource, [], requestBody);
+}
+
+ * Install a PIpeline installed in CICS through CMCI REST API
+ * @param {AbstractSession} session - the session to connect to CMCI with
+ * @param {IPIpelineParms} parms - parameters for enabling your pipeline
+ * @returns {Promise<ICMCIApiResponse>} promise that resolves to the response (XML parsed into a javascript object)
+ *                          when the request is complete
+ * @throws {ImperativeError} CICS pipeline name not defined or blank
+ * @throws {ImperativeError} CICS CSD group not defined or blank
+ * @throws {ImperativeError} CICS region name not defined or blank
+ * @throws {ImperativeError} CicsCmciRestClient request fails
+ */
+export async function installPIpeline(session: AbstractSession, parms: IPIpelineParms): Promise<ICMCIApiResponse> {
+    ImperativeExpect.toBeDefinedAndNonBlank(parms.name, "CICS pipeline name", "CICS pipeline name is required");
+    ImperativeExpect.toBeDefinedAndNonBlank(parms.csdGroup, "CICS CSD group", "CICS CSD group name is required");
+    ImperativeExpect.toBeDefinedAndNonBlank(parms.regionName, "CICS Region name", "CICS region name is required");
+
+    Logger.getAppLogger().debug("Attempting to install a PIpeline with the following parameters:\n%s", JSON.stringify(parms));
+
+    const cicsPlex = parms.cicsPlex == null ? "" : parms.cicsPlex + "/";
+    const cmciResource = "/" + CicsCmciConstants.CICS_SYSTEM_MANAGEMENT + "/" +
+        CicsCmciConstants.CICS_DEFINITION_PIPELINE + "/" + cicsPlex +
         `${parms.regionName}?CRITERIA=(NAME=${parms.name})&PARAMETER=CSDGROUP(${parms.csdGroup})`;
     const requestBody: any = {
         request: {
