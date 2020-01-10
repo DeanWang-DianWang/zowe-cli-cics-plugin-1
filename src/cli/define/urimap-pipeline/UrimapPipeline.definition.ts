@@ -54,7 +54,7 @@ export const UrimapPipelineDefinition: ICommandDefinition = {
             description: strings.OPTIONS.URIMAPSCHEME,
             type: "string",
             allowableValues: {values: ["http", "https"], caseSensitive: false},
-            defaultValue: "https"
+            defaultValue: "http"
         },
         {
             name: "pipeline-name",
@@ -79,12 +79,6 @@ export const UrimapPipelineDefinition: ICommandDefinition = {
             name: "webservice-name",
             aliases: ["wn"],
             description: strings.OPTIONS.WEBSERVICENAME,
-            type: "string"
-        },
-        {
-            name: "tcpipservice",
-            aliases: ["tcpip"],
-            description: strings.OPTIONS.TCPIPSERVICE,
             type: "string"
         },
         {

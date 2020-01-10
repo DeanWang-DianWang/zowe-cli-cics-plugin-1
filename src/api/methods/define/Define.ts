@@ -237,18 +237,6 @@ function buildUrimapRequestBody(parms: IURIMapParms, usage: "server" | "client" 
         requestAttrs.status = "ENABLED";
     }
 
-    if (parms.authenticate != null) {
-        requestAttrs.authenticate = parms.authenticate;
-    }
-
-    if (parms.certificate != null) {
-        requestAttrs.certificate = parms.certificate;
-    }
-
-    if (parms.tcpipservice != null) {
-        requestAttrs.tcpipservice = parms.tcpipservice;
-    }
-
     return {
         request: {
             create: {

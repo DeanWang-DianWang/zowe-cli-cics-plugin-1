@@ -10,44 +10,37 @@
 */
 
 import { AbstractSession, ICommandHandler, IHandlerParameters, IProfile, ITaskWithStatus, TaskStage } from "@zowe/imperative";
-import { ICMCIApiResponse, defineUrimapServer } from "../../../api";
+import { ICMCIApiResponse, discardWebservice } from "../../../api";
 import { CicsBaseHandler } from "../../CicsBaseHandler";
 
 import i18nTypings from "../../-strings-/en";
 
 // Does not use the import in anticipation of some internationalization work to be done later.
-const strings = (require("../../-strings-/en").default as typeof i18nTypings).DEFINE.RESOURCES.URIMAP;
+const strings = (require("../../-strings-/en").default as typeof i18nTypings).DISCARD.RESOURCES.WEBSERVICE;
 
 /**
- * Command handler for defining CICS URIMaps via CMCI
+ * Command handler for discarding CICS WEBService via CMCI
  * @export
- * @class UrimapServerHandler
+ * @class WebserviceHandler
  * @implements {ICommandHandler}
  */
-export default class UrimapServerHandler extends CicsBaseHandler {
+
+export default class WebserviceHandler extends CicsBaseHandler {
     public async processWithSession(params: IHandlerParameters, session: AbstractSession, profile: IProfile): Promise<ICMCIApiResponse> {
 
         const status: ITaskWithStatus = {
-            statusMessage: "Defining URIMAP of type Server to CICS",
+            statusMessage: "Discarding WEBSERVICE from CICS",
             percentComplete: 0,
             stageName: TaskStage.IN_PROGRESS
         };
         params.response.progress.startBar({task: status});
 
-        const response = await defineUrimapServer(session, {
-            name: params.arguments.urimapName,
-            csdGroup: params.arguments.csdGroup,
-            path: params.arguments.urimapPath,
-            host: params.arguments.urimapHost,
-            programName: params.arguments.programName,
-            scheme: params.arguments.urimapScheme,
-            description: params.arguments.description,
-            enable: params.arguments.enable,
-            regionName: params.arguments.regionName || profile.regionName,
-            cicsPlex: params.arguments.cicsPlex || profile.cicsPlex
+        const response = await discardWebservice(session, {
+            name: params.arguments.webserviceName,
+            regionName: params.arguments.regionName || profile.regionName
         });
 
-        params.response.console.log(strings.MESSAGES.SUCCESS, params.arguments.urimapName);
+        params.response.console.log(strings.MESSAGES.SUCCESS, params.arguments.webserviceName);
         return response;
     }
 }

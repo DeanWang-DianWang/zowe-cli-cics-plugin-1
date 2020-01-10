@@ -13,6 +13,7 @@ import { ICommandDefinition } from "@zowe/imperative";
 import { ProgramDefinition } from "./program/Program.definition";
 import { TransactionDefinition } from "./transaction/Transaction.definition";
 import { UrimapDefinition } from "./urimap/Urimap.definition";
+import { WebserviceDefinition } from "./webservice/Webservice.definition";
 
 import i18nTypings from "../-strings-/en";
 import { CicsSession } from "../CicsSession";
@@ -30,7 +31,8 @@ const definition: ICommandDefinition = {
     type: "group",
     children: [ProgramDefinition,
                TransactionDefinition,
-               UrimapDefinition],
+               UrimapDefinition,
+               WebserviceDefinition],
     passOn: [
         {
             property: "options",

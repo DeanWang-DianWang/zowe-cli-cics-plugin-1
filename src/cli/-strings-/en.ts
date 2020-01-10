@@ -98,16 +98,12 @@ export default {
                     PROGRAMNAME: "The application program that makes or handles the requests.",
                     PIPELINENAME: "The name of the PIPELINE resource definition for the URIMAP. " +
                         "The maximum length of the pipeline name is eight characters.",
-                    CERTIFICATE: "The label of a certificate in the keyring that is to be used as the client " +
-                        "certificate in SSL handshakes",
-                    AUTHENTICATE: "The authentication and identification scheme to be used for client URIMAPs.",
                     DESCRIPTION: "Description of the URIMAP resource being defined.",
                     TRANSACTIONNAME: "The name of the TRANSACTION resource definition for the URIMAP. " +
                         "The maximum length of the transaction name is four characters.",
                     WEBSERVICENAME: "The name of the WEBSERVICE resource definition for the URIMAP. " +
                         "The maximum length of the transaction name is 32 characters.",
-                    ENABLE: "Whether or not the URIMAP is to be enabled on install by default. ",
-                    TCPIPSERVICE: "The TCPIPSERVICE to which the URIMAP definition applies."
+                    ENABLE: "Whether or not the URIMAP is to be enabled on install by default. "
                 },
                 MESSAGES: {
                     SUCCESS: "The URIMAP '%s' was defined successfully."
@@ -303,6 +299,21 @@ export default {
                 EXAMPLES: {
                     EX1: "Discard a urimap named URIMAPA from the region named MYREGION"
                 }
+            },
+            WEBSERVICE: {
+                DESCRIPTION: "Discard a webservice from CICS.",
+                POSITIONALS: {
+                    WEBSERVICENAME: "The name of the webservice to discard. The maximum length of the urimap name is eight characters.",
+                },
+                OPTIONS: {
+                    REGIONNAME: "The CICS region name from which to discard the webservice"
+                },
+                MESSAGES: {
+                    SUCCESS: "The webservice '%s' was discarded successfully."
+                },
+                EXAMPLES: {
+                    EX1: "Discard a webservice named WEBSVCA from the region named MYREGION"
+                }
             }
         }
     },
@@ -415,6 +426,23 @@ export default {
                 },
                 EXAMPLES: {
                     EX1: "Install a urimap named URIMAPA to the region named MYREGION belonging to the csdgroup MYGRP"
+                }
+            },
+            WEBSERVICE: {
+                DESCRIPTION: "Install a webservice to CICS.",
+                POSITIONALS: {
+                    WEBSERVICENAME: "The name of the webservice to install. The maximum length of the web service name is eight characters.",
+                    CSDGROUP: "The CICS system definition (CSD) Group for the new web service that you want to install." +
+                        " The maximum length of the group name is eight characters."
+                },
+                OPTIONS: {
+                    REGIONNAME: "The CICS region name to which to install the webservice"
+                },
+                MESSAGES: {
+                    SUCCESS: "The webservice '%s' was installed successfully."
+                },
+                EXAMPLES: {
+                    EX1: "Install a webservice named WEBSVCA to the region named MYREGION belonging to the csdgroup MYGRP"
                 }
             }
         }
