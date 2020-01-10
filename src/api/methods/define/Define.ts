@@ -13,6 +13,7 @@ import { AbstractSession, ImperativeExpect, Logger } from "@zowe/imperative";
 import { CicsCmciRestClient } from "../../rest";
 import { CicsCmciConstants } from "../../constants";
 import { ICMCIApiResponse, IProgramParms, ITransactionParms, IURIMapParms, IWebServiceParms } from "../../doc";
+import { IPIpelineParms } from "../../doc/IPipelineParms";
 
 /**
  * Define a new program resource to CICS through CMCI REST API
@@ -296,6 +297,64 @@ export async function defineWebservice(session: AbstractSession, parms: IWebServ
     const cicsPlex = parms.cicsPlex == null ? "" : parms.cicsPlex + "/";
     const cmciResource = "/" + CicsCmciConstants.CICS_SYSTEM_MANAGEMENT + "/" +
         CicsCmciConstants.CICS_DEFINITION_WEBSERVICE + "/" + cicsPlex +
+        parms.regionName;
+    return CicsCmciRestClient.postExpectParsedXml(session, cmciResource,
+        [], requestBody) as any;
+}
+
+/**
+ * Define a new PIpeline resource to CICS through CMCI REST API
+ * @param {AbstractSession} session - the session to connect to CMCI with
+ * @param {IPIpelineParms} parms - parameters for defining your pipeline
+ * @returns {Promise<any>} promise that resolves to the response (XML parsed into a javascript object)
+ *                          when the request is complete
+ * @throws {ImperativeError} CICS program name not defined or blank
+ * @throws {ImperativeError} CICS CSD group not defined or blank
+ * @throws {ImperativeError} CICS region name not defined or blank
+ * @throws {ImperativeError} CicsCmciRestClient request fails
+ */
+export async function definePIpeline(session: AbstractSession, parms: IPIpelineParms): Promise<ICMCIApiResponse> {
+    ImperativeExpect.toBeDefinedAndNonBlank(parms.name, "CICS Pipeline name", "CICS Pipeline name is required");
+    ImperativeExpect.toBeDefinedAndNonBlank(parms.COnfigfile, "CICS Pipeline configfile path", "CICS Pipeline configfile path is required");
+    ImperativeExpect.toBeDefinedAndNonBlank(parms.SHelf, "CICS Pipeline shelf path", "CICS Pipeline shelf path is required");
+    ImperativeExpect.toBeDefinedAndNonBlank(parms.Wsdir, "CICS Pipeline Wsdir path", "CICS Pipeline Wsdir path is required");
+    ImperativeExpect.toNotBeNullOrUndefined(parms.status, "CICS Pipeline enable staus is required");
+    ImperativeExpect.toBeDefinedAndNonBlank(parms.csdGroup, "CICS CSD Group", "CICS CSD group is required");
+    ImperativeExpect.toBeDefinedAndNonBlank(parms.regionName, "CICS Region name", "CICS region name is required");
+
+    Logger.getAppLogger().debug("Attempting to define a web service with the following parameters:\n%s", JSON.stringify(parms));
+    const requestAttrs: any = {
+        name: parms.name,
+        csdgroup: parms.csdGroup,
+        configfile: parms.COnfigfile,
+        shelf: parms.SHelf,
+        wsdir: parms.Wsdir,
+        status: parms.status ? "Enabled" : "Disabled"
+    };
+
+    if (parms.description != null) {
+        requestAttrs.description = parms.description;
+    }
+
+    const requestBody: any = {
+        request: {
+            create: {
+                parameter: {
+                    $: {
+                        name: "CSD",
+                    }
+                },
+                attributes: {
+                    $: requestAttrs
+                }
+            }
+        }
+    };
+
+    const cicsPlex = parms.cicsPlex == null ? "" : parms.cicsPlex + "/";
+    const cicsScope = parms.cicsScope == null ? "" : parms.cicsScope + "/";
+    const cmciResource = "/" + CicsCmciConstants.CICS_SYSTEM_MANAGEMENT + "/" +
+        CicsCmciConstants.CICS_DEFINITION_PIPELINE + "/" + cicsPlex + cicsScope +
         parms.regionName;
     return CicsCmciRestClient.postExpectParsedXml(session, cmciResource,
         [], requestBody) as any;

@@ -90,6 +90,14 @@ const config: IImperativeConfig = {
                             type: "string"
                         },
                     },
+                    cicsScope: {
+                        type: "string",
+                        optionDefinition: {
+                            name: "cics-scope",
+                            description: "The name of the CICSPlex scope to interact with",
+                            type: "string"
+                        },
+                    },
                     rejectUnauthorized: {
                         type: "boolean",
                         optionDefinition: CicsSession.CICS_OPTION_REJECT_UNAUTHORIZED

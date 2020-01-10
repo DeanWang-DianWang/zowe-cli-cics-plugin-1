@@ -148,6 +148,34 @@ export default {
                     EX1: "Define a webservice named WEBSVCA for the pipeline named PIPE123 to the region named MYREGION " +
                         "in the CSD group MYGRP where the binding file is /u/exampleapp/wsbind/example.log"
                 }
+            },
+            PIPELINE: {
+                DESCRIPTION: "Define a new pipeline to CICS.",
+                POSITIONALS: {
+                    PIIPELINENAME: "The name of the PIPELINE to create. The maximum length of the pipeline name is eight characters.",
+                    CSDGROUP: "The CICS system definition (CSD) Group for the new web service that you want to define." +
+                        " The maximum length of the group name is eight characters."
+                },
+                OPTIONS: {
+                    CONFIGFILE: "The configuration file path for pipeline." +
+                        " The maximum length of configfile path is 255",
+                    SHELF: "The shelf path name of the pipeline. The maximum length of configfile path is 255",
+                    DESCRIPTION: "Description of the pipeline resource being defined.",
+                    STATUS: "Specifies whether whether the pipeline was enabled when install the pipeline ",
+                    WSDIR: "The the wsbind file path of the pipeline, the description (WSDL) file on HFS.",
+                    REGIONNAME: "The CICS region name to which to define the new pipeline.",
+                    CICSPLEX: "The name of the CICSPlex to which to define the new pipeline.",
+                    CICSSCOPE: "The name of the CICSPlex scope to which to define the new pipeline."
+                },
+                MESSAGES: {
+                    SUCCESS: "The PIPELINE '%s' was defined successfully."
+                },
+                EXAMPLES: {
+                    EX1: "Define a pipeline named PIPLTEST to the region named MYREGION " +
+                        "in the CSD group MYGRP where the configfile path is: /u/exampleapp/CICSApp.xml" +
+                        "shelf file path is /u/exampleapp/shelf" +
+                        "binding file path is /u/exampleapp/wsdir"
+                }
             }
         }
     },
@@ -224,6 +252,23 @@ export default {
                 },
                 EXAMPLES: {
                     EX1: "Delete a web service named WEBSVCA from the region named MYREGION belonging to the csdgroup MYGRP"
+                }
+            },
+            PIPELINE: {
+                DESCRIPTION: "Delete a pipeline from CICS.",
+                POSITIONALS: {
+                    PIPELINENAME: "The name of the pipeline to delete. The maximum length of the web service name is eight characters.",
+                    CSDGROUP: "The CICS system definition (CSD) Group for the pipeline that you want to delete." +
+                        " The maximum length of the group name is eight characters."
+                },
+                OPTIONS: {
+                    REGIONNAME: "The CICS region name from which to delete the pipeline"
+                },
+                MESSAGES: {
+                    SUCCESS: "The pipeline '%s' was deleted successfully."
+                },
+                EXAMPLES: {
+                    EX1: "Delete a pipeline named PIPLTEST from the region named MYREGION belonging to the csdgroup MYGRP"
                 }
             }
         }
@@ -351,6 +396,7 @@ export default {
                     EX7: "Get program resources that start with the name PRG from the region named MYREGION",
                     EX8: "Get a local transaction resource named TRAN from the region named MYREGION",
                     EX9: "Get program resources that start with the name MYPRG from the region named MYREGION and display various fields as a table",
+                    EX10: "Get PIpeline definition resources from the CSD group named GRP1 and the region named MYREGION",
                 }
             }
         }
@@ -411,6 +457,23 @@ export default {
                 },
                 EXAMPLES: {
                     EX1: "Install a urimap named URIMAPA to the region named MYREGION belonging to the csdgroup MYGRP"
+                }
+            },
+            PIPELINE: {
+                DESCRIPTION: "Install a pipeline to CICS.",
+                POSITIONALS: {
+                    PIPELINENAME: "The name of the pipeline to install. The maximum length of the pipeline name is eight characters.",
+                    CSDGROUP: "The CICS system definition (CSD) Group for the pipeline that you want to install." +
+                        " The maximum length of the group name is eight characters."
+                },
+                OPTIONS: {
+                    REGIONNAME: "The CICS region name to which to install the pipeline"
+                },
+                MESSAGES: {
+                    SUCCESS: "The pipeline '%s' was installed successfully."
+                },
+                EXAMPLES: {
+                    EX1: "Install a pipeline named PIPLTEST to the region named MYREGION belonging to the csdgroup MYGRP"
                 }
             }
         }
