@@ -59,6 +59,11 @@ export const CicsCmciConstants: { [key: string]: any } = {
     CICS_URIMAP: "CICSURIMap",
 
     /**
+     * Specifies the required part of the REST interface URI to access webservice
+     */
+    CICS_WEBSERVICE: "CICSWEBService",
+
+    /**
      * Specifies the required part of the REST interface URI to access CSD Group definitions
      */
 

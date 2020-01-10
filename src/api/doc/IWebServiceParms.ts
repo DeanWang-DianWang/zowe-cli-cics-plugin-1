@@ -20,7 +20,7 @@ export interface IWebServiceParms {
      * CSD group for the web service
      * Up to eight characters long
      */
-    csdGroup: string;
+    csdGroup?: string;
 
     /**
      * Pipeline name for the web service
