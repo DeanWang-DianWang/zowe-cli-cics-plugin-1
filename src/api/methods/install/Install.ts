@@ -119,7 +119,6 @@ export async function installUrimap(session: AbstractSession, parms: IURIMapParm
 }
 
 /**
-
  * Install a Webservice installed in CICS through CMCI REST API
  * @param {AbstractSession} session - the session to connect to CMCI with
  * @param {IWebServiceParms} parms - parameters for enabling your Webservice
@@ -153,7 +152,7 @@ export async function installWebservice(session: AbstractSession, parms: IWebSer
     return CicsCmciRestClient.putExpectParsedXml(session, cmciResource, [], requestBody);
 }
 
- * Install a PIpeline installed in CICS through CMCI REST API
+ /* Install a PIpeline installed in CICS through CMCI REST API
  * @param {AbstractSession} session - the session to connect to CMCI with
  * @param {IPIpelineParms} parms - parameters for enabling your pipeline
  * @returns {Promise<ICMCIApiResponse>} promise that resolves to the response (XML parsed into a javascript object)

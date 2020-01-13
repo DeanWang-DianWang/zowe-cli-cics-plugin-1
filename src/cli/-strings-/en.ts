@@ -489,6 +489,8 @@ export default {
                 },
                 EXAMPLES: {
                     EX1: "Install a webservice named WEBSVCA to the region named MYREGION belonging to the csdgroup MYGRP"
+                }
+            },
             PIPELINE: {
                 DESCRIPTION: "Install a pipeline to CICS.",
                 POSITIONALS: {
