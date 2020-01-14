@@ -9,13 +9,31 @@
 *                                                                                 *
 */
 
-export * from "./ICMCIApiResponse";
-export * from "./ICMCIResponseResultSummary";
-export * from "./ICSDGroupParms";
-export * from "./IProgramParms";
-export * from "./IResourceParms";
-export * from "./ITransactionParms";
-export * from "./IURIMapParms";
-export * from "./IWebServiceParms";
-export * from "./IPIpelineParms";
-export * from "./ITcpipserviceParms";
+export interface ITcpipserviceParms {
+    /**
+     * The name of the tcpipservice
+     * Up to eight characters long
+     */
+    name: string;
+
+    /**
+     * The port of the tcpipservice
+     */
+    portNumber?: string;
+
+    /**
+     * CSD group for the tcpipservice
+     * Up to eight characters long
+     */
+    csdGroup?: string;
+
+    /**
+     * The name of the CICS region of the tcpipservice
+     */
+    regionName: string;
+
+    /**
+     * CICS Plex of the tcpipservice
+     */
+    cicsPlex?: string;
+}

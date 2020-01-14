@@ -64,6 +64,16 @@ export const CicsCmciConstants: { [key: string]: any } = {
     CICS_WEBSERVICE: "CICSWEBService",
 
     /**
+     * Specifies the required part of the REST interface URI to access TCPIPSERVICE definitions
+     */
+    CICS_DEFINITION_TCPIPS: "CICSDefinitionTCPIPService",
+
+    /**
+     * Specifies the required part of the REST interface URI to access TCPIPSERVICE resources
+     */
+    CICS_TCPIPS: "CICSTCPIPService",
+
+    /**
      * Specifies the required part of the REST interface URI to access CSD Group definitions
      */
 

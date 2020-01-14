@@ -12,7 +12,7 @@
 import { AbstractSession, ImperativeExpect, Logger } from "@zowe/imperative";
 import { CicsCmciRestClient } from "../../rest";
 import { CicsCmciConstants } from "../../constants";
-import { ICMCIApiResponse, IProgramParms, ITransactionParms, IURIMapParms, IWebServiceParms } from "../../doc";
+import { ICMCIApiResponse, IProgramParms, ITransactionParms, IURIMapParms, IWebServiceParms, ITcpipserviceParms } from "../../doc";
 import { IPIpelineParms } from "../../doc/IPipelineParms";
 
 /**
@@ -355,6 +355,52 @@ export async function definePIpeline(session: AbstractSession, parms: IPIpelineP
     const cicsScope = parms.cicsScope == null ? "" : parms.cicsScope + "/";
     const cmciResource = "/" + CicsCmciConstants.CICS_SYSTEM_MANAGEMENT + "/" +
         CicsCmciConstants.CICS_DEFINITION_PIPELINE + "/" + cicsPlex + cicsScope +
+        parms.regionName;
+    return CicsCmciRestClient.postExpectParsedXml(session, cmciResource,
+        [], requestBody) as any;
+}
+
+/**
+ * Define a new tcpipservice resource to CICS through CMCI REST API
+ * @param {AbstractSession} session - the session to connect to CMCI with
+ * @param {ITcpipserviceParms} parms - parameters for defining your tcpipservice
+ * @returns {Promise<any>} promise that resolves to the response (XML parsed into a javascript object)
+ *                          when the request is complete
+ * @throws {ImperativeError} CICS tcpipservice name not defined or blank
+ * @throws {ImperativeError} CICS CSD group not defined or blank
+ * @throws {ImperativeError} portNumber not defined or blank
+ * @throws {ImperativeError} CICS region name not defined or blank
+ * @throws {ImperativeError} CicsCmciRestClient request fails
+ */
+export async function defineTcpipservice(session: AbstractSession, parms: ITcpipserviceParms): Promise<ICMCIApiResponse> {
+    ImperativeExpect.toBeDefinedAndNonBlank(parms.name, "CICS tcpipservice name", "CICS tcpipservice name is required");
+    ImperativeExpect.toBeDefinedAndNonBlank(parms.csdGroup, "CICS CSD Group", "CICS CSD group is required");
+    ImperativeExpect.toBeDefinedAndNonBlank(parms.portNumber, "CICS port", "portNumber is required");
+    ImperativeExpect.toBeDefinedAndNonBlank(parms.regionName, "CICS Region name", "CICS region name is required");
+
+    Logger.getAppLogger().debug("Attempting to define a tcpipservice with the following parameters:\n%s", JSON.stringify(parms));
+    const requestBody: any = {
+        request: {
+            create: {
+                parameter: {
+                    $: {
+                        name: "CSD",
+                    }
+                },
+                attributes: {
+                    $: {
+                        name: parms.name,
+                        csdgroup: parms.csdGroup,
+                        portNumber: parms.portNumber,
+                    }
+                }
+            }
+        }
+    };
+
+    const cicsPlex = parms.cicsPlex == null ? "" : parms.cicsPlex + "/";
+    const cmciResource = "/" + CicsCmciConstants.CICS_SYSTEM_MANAGEMENT + "/" +
+        CicsCmciConstants.CICS_DEFINITION_TCPIPS + "/" + cicsPlex +
         parms.regionName;
     return CicsCmciRestClient.postExpectParsedXml(session, cmciResource,
         [], requestBody) as any;

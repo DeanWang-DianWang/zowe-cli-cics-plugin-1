@@ -176,7 +176,27 @@ export default {
                         "shelf file path is /u/exampleapp/shelf" +
                         "binding file path is /u/exampleapp/wsdir"
                 }
-            }
+            },
+            TCPIPS: {
+                DESCRIPTION: "Define a new tcpipservice to CICS.",
+                POSITIONALS: {
+                    TCPIPSNAME: "The name of the new tcpipservice to define. The maximum length of the program name is eight characters.",
+                    CSDGROUP: "The CICS system definition (CSD) Group for the new tcpipservice that you want to define." +
+                    " The maximum length of the group "
+                    + "name is eight characters.",
+                },
+                OPTIONS: {
+                    PORT: "The port to use. Range: 1-65535",
+                    REGIONNAME: "The CICS region name to which to define the new tcpipservice",
+                    CICSPLEX: "The name of the CICSPlex to which to define the new tcpipservice"
+                },
+                MESSAGES: {
+                    SUCCESS: "The tcpipservice '%s' was defined successfully."
+                },
+                EXAMPLES: {
+                    EX1: "Define a tcpipservice named TCPIPS to the region name MYREGION in the CSD group MYGRP"
+                }
+            },
         }
     },
     DELETE: {
