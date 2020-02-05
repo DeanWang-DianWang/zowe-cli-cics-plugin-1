@@ -12,7 +12,7 @@
 import { AbstractSession, ImperativeExpect, Logger } from "@zowe/imperative";
 import { CicsCmciRestClient } from "../../rest";
 import { CicsCmciConstants } from "../../constants";
-import { ICMCIApiResponse, IProgramParms, IURIMapParms, IWebServiceParms, IPIpelineParms } from "../../doc";
+import { ICMCIApiResponse, IProgramParms, IURIMapParms, IWebServiceParms, IPIpelineParms, ITcpipserviceParms } from "../../doc";
 
 /**
  * Install a program definition to CICS through CMCI REST API
@@ -183,4 +183,37 @@ export async function installPIpeline(session: AbstractSession, parms: IPIpeline
         }
     };
     return CicsCmciRestClient.putExpectParsedXml(session, cmciResource, [], requestBody);
+}
+
+/* Install a Tcpipservice installed in CICS through CMCI REST API
+* @param {AbstractSession} session - the session to connect to CMCI with
+* @param {ITcpipserviceParms} parms - parameters for enabling your Tcpipservice
+* @returns {Promise<ICMCIApiResponse>} promise that resolves to the response (XML parsed into a javascript object)
+*                          when the request is complete
+* @throws {ImperativeError} CICS Tcpipservice name not defined or blank
+* @throws {ImperativeError} CICS CSD group not defined or blank
+* @throws {ImperativeError} CICS region name not defined or blank
+* @throws {ImperativeError} CicsCmciRestClient request fails
+*/
+export async function installTcpipservice(session: AbstractSession, parms: ITcpipserviceParms): Promise<ICMCIApiResponse> {
+   ImperativeExpect.toBeDefinedAndNonBlank(parms.name, "CICS Tcpipservice name", "CICS Tcpipservice name is required");
+   ImperativeExpect.toBeDefinedAndNonBlank(parms.csdGroup, "CICS CSD group", "CICS CSD group name is required");
+   ImperativeExpect.toBeDefinedAndNonBlank(parms.regionName, "CICS Region name", "CICS region name is required");
+
+   Logger.getAppLogger().debug("Attempting to install a Tcpipservice with the following parameters:\n%s", JSON.stringify(parms));
+
+   const cicsPlex = parms.cicsPlex == null ? "" : parms.cicsPlex + "/";
+   const cmciResource = "/" + CicsCmciConstants.CICS_SYSTEM_MANAGEMENT + "/" +
+       CicsCmciConstants.CICS_DEFINITION_TCPIPS + "/" + cicsPlex +
+       `${parms.regionName}?CRITERIA=(NAME=${parms.name})&PARAMETER=CSDGROUP(${parms.csdGroup})`;
+   const requestBody: any = {
+       request: {
+           action: {
+               $: {
+                   name: "CSDINSTALL",
+               }
+           }
+       }
+   };
+   return CicsCmciRestClient.putExpectParsedXml(session, cmciResource, [], requestBody);
 }

@@ -14,17 +14,16 @@ import { ICommandDefinition } from "@zowe/imperative";
 import i18nTypings from "../../-strings-/en";
 
 // Does not use the import in anticipation of some internationalization work to be done later.
-const strings = (require("../../-strings-/en").default as typeof i18nTypings).INSTALL.RESOURCES.WEBSERVICE;
+const strings = (require("../../-strings-/en").default as typeof i18nTypings).INSTALL.RESOURCES.TCPIPS;
 
-export const WebserviceDefinition: ICommandDefinition = {
-    name: "webservice",
-    aliases: [],
+export const TcpipserviceDefinition: ICommandDefinition = {
+    name: "tcpipservice", aliases: ["tcpips"],
     description: strings.DESCRIPTION,
-    handler: __dirname + "/Webservice.handler",
+    handler: __dirname + "/Tcpipservice.handler",
     type: "command",
     positionals: [{
-        name: "webserviceName",
-        description: strings.POSITIONALS.WEBSERVICENAME,
+        name: "tcpipserviceName",
+        description: strings.POSITIONALS.TCPIPSNAME,
         type: "string",
         required: true
     }, {
@@ -41,6 +40,6 @@ export const WebserviceDefinition: ICommandDefinition = {
     profile: {optional: ["cics"]},
     examples: [{
         description: strings.EXAMPLES.EX1,
-        options: "WEBSVCA MYGRP --region-name MYREGION"
+        options: "TCPIPS MYGRP --region-name MYREGION"
     }]
 };

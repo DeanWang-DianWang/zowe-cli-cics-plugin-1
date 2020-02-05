@@ -527,7 +527,25 @@ export default {
                 EXAMPLES: {
                     EX1: "Install a pipeline named PIPLTEST to the region named MYREGION belonging to the csdgroup MYGRP"
                 }
-            }
+            },
+            TCPIPS: {
+                DESCRIPTION: "Install a new tcpipservice to CICS.",
+                POSITIONALS: {
+                    TCPIPSNAME: "The name of the new tcpipservice to install. The maximum length of the program name is eight characters.",
+                    CSDGROUP: "The CICS system definition (CSD) Group for the new tcpipservice that you want to install." +
+                    " The maximum length of the group "
+                    + "name is eight characters.",
+                },
+                OPTIONS: {
+                    REGIONNAME: "The CICS region name to which to install the new tcpipservice",
+                },
+                MESSAGES: {
+                    SUCCESS: "The tcpipservice '%s' was installed successfully."
+                },
+                EXAMPLES: {
+                    EX1: "Install a tcpipservice named TCPIPS to the region name MYREGION in the CSD group MYGRP"
+                }
+            },
         }
     },
     REFRESH: {

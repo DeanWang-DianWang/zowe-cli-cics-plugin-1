@@ -15,6 +15,7 @@ import { TransactionDefinition } from "./transaction/Transaction.definition";
 import { UrimapDefinition } from "./urimap/Urimap.definition";
 import { WebserviceDefinition } from "./webservice/Webservice.definition";
 import { PIpelineDefinition } from "./pipeline/PIpeline.definition";
+import { TcpipserviceDefinition } from "./tcpipservice/Tcpipservice.definition";
 
 import i18nTypings from "../-strings-/en";
 import { CicsSession } from "../CicsSession";
@@ -34,7 +35,8 @@ const definition: ICommandDefinition = {
                TransactionDefinition,
                UrimapDefinition,
                WebserviceDefinition,
-               PIpelineDefinition],
+               PIpelineDefinition,
+               TcpipserviceDefinition],
     passOn: [
         {
             property: "options",
